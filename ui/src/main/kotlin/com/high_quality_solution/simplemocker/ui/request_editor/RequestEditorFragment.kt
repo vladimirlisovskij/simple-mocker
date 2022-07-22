@@ -15,7 +15,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.high_quality_solution.simplemocker.ui.R
 import com.high_quality_solution.simplemocker.ui.databinding.ScreenRequestEditorBinding
-import com.high_quality_solution.simplemocker.ui.di.UIComponent
 import com.high_quality_solution.simplemocker.ui.di.UiDiResolver
 import com.high_quality_solution.simplemocker.ui.utils.Constants
 import com.high_quality_solution.simplemocker.ui.utils.Ext.createAfterTextChangedTextWatcher
@@ -78,11 +77,14 @@ class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
                     viewModel.screenEvent.collect { event ->
                         when (event) {
                             is RequestEditorViewModel.ShowFileEvent -> startJsonViewerActivity(event.intent)
-                            is RequestEditorViewModel.ToastScreenEvent -> Toast.makeText(
+
+                            is RequestEditorViewModel.ToastEvent -> Toast.makeText(
                                 requireContext(),
                                 event.text,
                                 Toast.LENGTH_LONG
                             ).show()
+
+                            is RequestEditorViewModel.NavigationBackEvent -> requireActivity().onBackPressed()
                         }
                     }
                 }

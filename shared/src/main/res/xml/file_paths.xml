@@ -3,6 +3,6 @@
 
     <files-path
         name="request_body"
-        path="request_body/" />
+        path="." />
 
 </paths>

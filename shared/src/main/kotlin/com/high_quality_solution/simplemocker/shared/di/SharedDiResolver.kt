@@ -8,12 +8,11 @@ object SharedDiResolver {
     private var apiWeakInstance = WeakReference<SharedDiApi>(null)
 
     fun getApi(): SharedDiApi {
-        synchronized(this) {
-            return apiWeakInstance.get()
+        return synchronized(this) {
+            apiWeakInstance.get()
                 ?: DaggerSharedApiComponent.factory()
                     .create(dependenciesCreator.invoke())
                     .also { apiWeakInstance = WeakReference(it) }
         }
     }
 }
-

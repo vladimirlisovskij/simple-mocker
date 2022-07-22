@@ -1,6 +1,5 @@
 package com.high_quality_solution.simplemocker.service
 
-import android.util.Log
 import com.high_quality_solution.simplemocker.aidl.MockRequestAidl
 import com.high_quality_solution.simplemocker.aidl.MockResponseAidl
 import com.high_quality_solution.simplemocker.aidl.MockerBinder
@@ -9,8 +8,6 @@ class MockerBinderImpl(
     private val getMockResponseGateway: GetMockResponseGateway
 ) : MockerBinder.Stub() {
     override fun getMockRequestParams(request: MockRequestAidl): MockResponseAidl? {
-        return getMockResponseGateway.invoke(request).also {
-            Log.d("MOCKERTAG", "$it")
-        }
+        return getMockResponseGateway.invoke(request)
     }
 }

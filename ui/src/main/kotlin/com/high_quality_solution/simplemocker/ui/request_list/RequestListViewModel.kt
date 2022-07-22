@@ -1,6 +1,5 @@
 package com.high_quality_solution.simplemocker.ui.request_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.high_quality_solution.simplemocker.shared.dto.RequestInfo
@@ -11,7 +10,10 @@ import com.high_quality_solution.simplemocker.ui.base.ScreenEvent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.RequestListItem
 import com.high_quality_solution.simplemocker.ui.utils.Constants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class RequestListViewModel(
@@ -21,10 +23,7 @@ class RequestListViewModel(
 ) : ViewModel() {
     val requestsList = getRequestListUseCase
         .invoke()
-        .map {
-            Log.d("ITEMS", "items ${it.size} $it")
-            it.map(::createRequestListItem)
-        }
+        .map { it.map(::createRequestListItem) }
         .flowOn(Dispatchers.IO)
 
     private val mutableScreenEvents = MutableSharedFlow<ScreenEvent>()

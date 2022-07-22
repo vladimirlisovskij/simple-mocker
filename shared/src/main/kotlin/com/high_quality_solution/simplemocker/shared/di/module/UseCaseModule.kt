@@ -64,4 +64,13 @@ object UseCaseModule {
         dataBaseRepository,
         storageRepository
     )
+
+    @Provides
+    fun provideUpdateRequestUseCase(
+        dataBaseRepository: DataBaseRepository,
+        storageRepository: StorageRepository
+    ) = UpdateRequestUseCase(
+        dataBaseRepository,
+        storageRepository
+    )
 }

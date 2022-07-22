@@ -46,6 +46,8 @@ class MockerApp : Application() {
                 override fun setRequestEnabledStateUseCase() = SharedDiResolver.getApi().setRequestEnabledStateUseCase()
 
                 override fun removeRequestUseCase() = SharedDiResolver.getApi().removeRequestUseCase()
+
+                override fun updateRequestUseCase() = SharedDiResolver.getApi().updateRequestUseCase()
             }
         }
     }

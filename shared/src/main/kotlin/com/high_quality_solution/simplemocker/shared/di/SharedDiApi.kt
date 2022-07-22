@@ -11,4 +11,5 @@ interface SharedDiApi {
     fun getFileNameByUriUseCase(): GetFileNameByUriUseCase
     fun setRequestEnabledStateUseCase(): SetRequestEnabledStateUseCase
     fun removeRequestUseCase(): RemoveRequestUseCase
+    fun updateRequestUseCase(): UpdateRequestUseCase
 }

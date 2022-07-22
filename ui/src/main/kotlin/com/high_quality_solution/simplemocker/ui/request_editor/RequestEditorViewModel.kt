@@ -5,14 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.high_quality_solution.simplemocker.okhttp.MockerInterceptor
+import com.high_quality_solution.simplemocker.shared.RequestBodyProvider
+import com.high_quality_solution.simplemocker.shared.dto.EditedRequestInfo
 import com.high_quality_solution.simplemocker.shared.dto.NewRequestInfo
 import com.high_quality_solution.simplemocker.shared.dto.RequestInfo
 import com.high_quality_solution.simplemocker.shared.dto.RequestParams
-import com.high_quality_solution.simplemocker.shared.usecase.CreateMockRequestUseCase
-import com.high_quality_solution.simplemocker.shared.usecase.GetFileNameByUriUseCase
-import com.high_quality_solution.simplemocker.shared.usecase.GetRequestByIdUseCase
-import com.high_quality_solution.simplemocker.shared.usecase.GetUriForFileNameUseCase
+import com.high_quality_solution.simplemocker.shared.usecase.*
 import com.high_quality_solution.simplemocker.ui.R
 import com.high_quality_solution.simplemocker.ui.base.ScreenEvent
 import com.high_quality_solution.simplemocker.ui.utils.Constants
@@ -25,7 +23,8 @@ class RequestEditorViewModel(
     private val createMockRequestUseCase: CreateMockRequestUseCase,
     private val getRequestByIdUseCase: GetRequestByIdUseCase,
     private val getUriForFileNameUseCase: GetUriForFileNameUseCase,
-    private val getFileNameByUriUseCase: GetFileNameByUriUseCase
+    private val getFileNameByUriUseCase: GetFileNameByUriUseCase,
+    private val updateRequestUseCase: UpdateRequestUseCase
 ) : ViewModel() {
     private val isInEditMode = itemId != Constants.NO_ID
     private var initialRequestInfo: RequestInfo? = null
@@ -70,30 +69,51 @@ class RequestEditorViewModel(
             val errorMessage = checkFieldsForEditMode(curState)
             if (errorMessage != null) {
                 viewModelScope.launch {
-                    mutableScreenEvents.emit(ToastScreenEvent(errorMessage))
+                    mutableScreenEvents.emit(ToastEvent(errorMessage))
                 }
             } else {
+                val editedRequestInfo = EditedRequestInfo(
+                    id = itemId,
+                    requestParams = createRequestParams(curState),
+                    newFileUri = selectedFileUri
+                )
 
+                viewModelScope.launch {
+                    mutableScreenState.update { state ->
+                        state.copy(isLoading = true)
+                    }
+
+                    updateRequestUseCase.invoke(editedRequestInfo)
+                    mutableScreenState.update { state ->
+                        state.copy(isLoading = false)
+                    }
+
+                    mutableScreenEvents.emit(NavigationBackEvent)
+                }
             }
         } else {
             val errorMessage = checkFieldsForCreateMode(curState)
             if (errorMessage != null) {
                 viewModelScope.launch {
-                    mutableScreenEvents.emit(ToastScreenEvent(errorMessage))
+                    mutableScreenEvents.emit(ToastEvent(errorMessage))
                 }
             } else {
                 val newRequestInfo = NewRequestInfo(
-                    requestParams = RequestParams(
-                        path = curState.path,
-                        host = curState.host.ifBlank { null },
-                        params = if (curState.params.isNotBlank()) sortParams(curState.params) else null
-                    ),
-
+                    requestParams = createRequestParams(curState),
                     fileUri = selectedFileUri!!
                 )
 
                 viewModelScope.launch {
+                    mutableScreenState.update { state ->
+                        state.copy(isLoading = true)
+                    }
+
                     createMockRequestUseCase.invoke(newRequestInfo)
+                    mutableScreenState.update { state ->
+                        state.copy(isLoading = false)
+                    }
+
+                    mutableScreenEvents.emit(NavigationBackEvent)
                 }
             }
         }
@@ -103,14 +123,14 @@ class RequestEditorViewModel(
         initialRequestInfo?.bodyFileName?.let { name ->
             val uri = getUriForFileNameUseCase.invoke(name)
             viewModelScope.launch {
-                val intent = Intent().apply {
+                val jsonIntent = Intent().apply {
                     action = Intent.ACTION_VIEW
-                    data = uri
-                    type = Constants.JSON_MIME
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    setDataAndType(uri, "text/plain")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 }
 
-                mutableScreenEvents.emit(ShowFileEvent(intent))
+                val chooserIntent = Intent.createChooser(jsonIntent, "title")
+                mutableScreenEvents.emit(ShowFileEvent(chooserIntent))
             }
         }
     }
@@ -131,6 +151,14 @@ class RequestEditorViewModel(
         mutableScreenState.update { state ->
             state.copy(params = value)
         }
+    }
+
+    private fun createRequestParams(viewState: ViewState): RequestParams {
+        return RequestParams(
+            path = viewState.path,
+            host = viewState.host.ifBlank { null },
+            params = if (viewState.params.isNotBlank()) sortParams(viewState.params) else null
+        )
     }
 
     private fun sortParams(string: String): String {
@@ -168,7 +196,9 @@ class RequestEditorViewModel(
 
     class ShowFileEvent(val intent: Intent) : ScreenEvent
 
-    class ToastScreenEvent(val text: String) : ScreenEvent
+    class ToastEvent(val text: String) : ScreenEvent
+
+    object NavigationBackEvent: ScreenEvent
 
     data class ViewState(
         val isLoading: Boolean,
@@ -184,7 +214,8 @@ class RequestEditorViewModel(
         private val createMockRequestUseCase: CreateMockRequestUseCase,
         private val getRequestById: GetRequestByIdUseCase,
         private val getUriForFileNameUseCase: GetUriForFileNameUseCase,
-        private val getFileNameByUriUseCase: GetFileNameByUriUseCase
+        private val getFileNameByUriUseCase: GetFileNameByUriUseCase,
+        private val updateRequestUseCase: UpdateRequestUseCase
     ) {
         fun create(itemId: Long) = RequestEditorViewModel(
             itemId,
@@ -192,7 +223,8 @@ class RequestEditorViewModel(
             createMockRequestUseCase,
             getRequestById,
             getUriForFileNameUseCase,
-            getFileNameByUriUseCase
+            getFileNameByUriUseCase,
+            updateRequestUseCase
         )
     }
 }

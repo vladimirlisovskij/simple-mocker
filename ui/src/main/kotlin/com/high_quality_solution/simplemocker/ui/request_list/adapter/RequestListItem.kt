@@ -7,7 +7,7 @@ data class RequestListItem(
     val request: String,
     val isChecked: Boolean
 ) : PlainAdapterItem {
-    override val uniqueProperty = "RequestListItem $id"
+    override val uniqueProperty = "RequestListItem $id $request"
 
     override fun getChangePayload(other: PlainAdapterItem): Any {
         return if (other is RequestListItem && other.isChecked != isChecked) {

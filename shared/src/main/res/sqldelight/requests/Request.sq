@@ -28,13 +28,26 @@ UPDATE request
 SET isEnabled = :isEnabled
 WHERE request.id = :id;
 
+updateRequestParams:
+UPDATE request
+SET
+    params = :params,
+    host = :host,
+    path = :path
+WHERE request.id = :id;
+
 findRequestResponse:
-SELECT request.bodyFileName FROM request
+SELECT request.bodyFileName
+FROM request
 WHERE
     request.isEnabled = 1 AND
-    request.path = :path
---     AND
---     request.host = IFNULL(:host, request.host)
---     AND
---     request.params = IFNULL(:params, request.params)
+    request.path = :path AND
+    CASE WHEN :params IS NOT NULL
+        THEN request.params IS NULL OR request.params = :params
+        ELSE 1
+        END AND
+    CASE WHEN :host IS NOT NULL
+        THEN request.host IS NULL OR request.host = :host
+        ELSE 1
+        END
 LIMIT 1;

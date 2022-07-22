@@ -49,8 +49,8 @@ class DataBaseRepository(
     fun findRequestResponse(params: RequestParams): ResponseInfo? {
         return database.requestQueries.findRequestResponse(
             path = params.path,
-//            host = params.host,
-//            params = params.params,
+            host = params.host,
+            params = params.params,
         )
             .executeAsOneOrNull()
             ?.let(::createResponseInfo)
@@ -61,6 +61,17 @@ class DataBaseRepository(
             database.requestQueries.setEnableState(
                 id = id,
                 isEnabled = if (isEnabled) REQUEST_ENABLED else REQUEST_DISABLED
+            )
+        }
+    }
+
+    suspend fun updateRequestParams(id: Long, requestParams: RequestParams) {
+        withContext(Dispatchers.IO) {
+            database.requestQueries.updateRequestParams(
+                id = id,
+                host = requestParams.host,
+                params = requestParams.params,
+                path = requestParams.path
             )
         }
     }

@@ -7,7 +7,6 @@ import android.provider.OpenableColumns
 import com.high_quality_solution.simplemocker.shared.RequestBodyProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.io.FileOutputStream
 
 class StorageRepository(
@@ -42,8 +41,21 @@ class StorageRepository(
         }
     }
 
-    fun replaceFile(oldFileName: String, newFileUri: Uri) {
+    suspend fun tryReplaceFile(oldFileName: String, newFileUri: Uri): Boolean {
+        return withContext(Dispatchers.IO) {
+            val oldFile = RequestBodyProvider.getFile(context, oldFileName)
+            val newFileInputStream = context.contentResolver.openInputStream(newFileUri)
+                ?: return@withContext false
 
+            runCatching {
+                newFileInputStream.use { input ->
+                    FileOutputStream(oldFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+            }.isSuccess
+
+        }
     }
 
     fun removeFile(fileName: String): Boolean {

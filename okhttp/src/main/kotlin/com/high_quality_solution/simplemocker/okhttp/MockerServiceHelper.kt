@@ -8,12 +8,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import com.high_quality_solution.simplemocker.aidl.MockerBinder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class MockerServiceHelper private constructor(
     private val context: Context
@@ -21,25 +16,20 @@ class MockerServiceHelper private constructor(
     private var runningActivities = 0
 
     override fun onActivityStarted(activity: Activity) {
-        Log.d("MOCKERTAG", "activity started $runningActivities")
         if (runningActivities == 0) {
             context.bindService(
                 createServiceStartupIntent(),
                 this,
                 Context.BIND_AUTO_CREATE
-            ).also {
-                Log.d("MOCKERTAG", "BIND $it")
-            }
+            )
         }
 
         runningActivities++
     }
 
     override fun onActivityStopped(activity: Activity) {
-        Log.d("MOCKERTAG", "activity stoped $runningActivities")
         runningActivities--
         if (runningActivities == 0) {
-            Log.d("MOCKERTAG", "UNBIND")
             context.unbindService(this)
         }
     }

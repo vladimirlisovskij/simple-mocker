@@ -26,12 +26,14 @@ object ViewModelModule {
         createMockRequestUseCase: CreateMockRequestUseCase,
         getRequestByIdUseCase: GetRequestByIdUseCase,
         getUriForFileNameUseCase: GetUriForFileNameUseCase,
-        getFileNameByUriUseCase: GetFileNameByUriUseCase
+        getFileNameByUriUseCase: GetFileNameByUriUseCase,
+        updateRequestUseCase: UpdateRequestUseCase,
     ) = RequestEditorViewModel.Factory(
         context,
         createMockRequestUseCase,
         getRequestByIdUseCase,
         getUriForFileNameUseCase,
-        getFileNameByUriUseCase
+        getFileNameByUriUseCase,
+        updateRequestUseCase
     )
 }
