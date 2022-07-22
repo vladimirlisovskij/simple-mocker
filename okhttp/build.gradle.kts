@@ -1,4 +1,6 @@
 plugins {
+    id("maven-publish")
+
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
@@ -10,13 +12,20 @@ android {
         minSdk = 21
         targetSdk = 32
     }
-    
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
@@ -24,5 +33,18 @@ dependencies {
     implementation(projects.aidl)
 
     implementation(libs.okhttp)
-    implementation(libs.coroutines)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

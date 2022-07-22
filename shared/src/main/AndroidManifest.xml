@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.high_quality_solution.simplemocker.shared">
+    package="com.github.vladimirlisovskij.simple_mocker.shared">
 
     <permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,8 +8,8 @@
     <application>
 
         <provider
-            android:name=".RequestBodyProvider"
-            android:authorities="com.high_quality_solution.simplemocker.shared.provider"
+            android:name="com.github.vladimirlisovskij.simple_mocker.shared.RequestBodyProvider"
+            android:authorities="com.github.vladimirlisovskij.simple_mocker.shared.provider"
             android:grantUriPermissions="true">
 
             <meta-data

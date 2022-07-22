@@ -8,11 +8,11 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.high_quality_solution.simplemocker"
+        applicationId = "com.github.vladimirlisovskij.simple_mocker"
         minSdk = 21
         targetSdk = 32
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0-alpha1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

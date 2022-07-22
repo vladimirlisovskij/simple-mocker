@@ -24,7 +24,7 @@ android {
 
     sqldelight {
         database("MockRequestsDatabase") {
-            packageName = "com.high_quality_solution.simplemocker.shared.mock_requests_database"
+            packageName = "com.github.vladimirlisovskij.simple_mocker.shared.mock_requests_database"
             sourceFolders = listOf("res/sqldelight")
         }
     }

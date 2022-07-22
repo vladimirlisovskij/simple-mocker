@@ -22,7 +22,8 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "SimpleMocker"
+
+rootProject.name = "simple-mocker"
 
 include(":app")
 include(":service")

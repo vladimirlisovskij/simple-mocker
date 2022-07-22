@@ -1,4 +1,6 @@
 plugins {
+    id("maven-publish")
+
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
@@ -19,5 +21,25 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
     }
 }

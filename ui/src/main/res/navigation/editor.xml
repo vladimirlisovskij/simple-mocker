@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/requestListFragment"
-        android:name="com.high_quality_solution.simplemocker.ui.request_list.RequestListFragment"
+        android:name="com.github.vladimirlisovskij.simple_mocker.ui.request_list.RequestListFragment"
         android:label="RequestListFragment"
         tools:layout="@layout/screen_request_list">
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/requestEditorFragment"
-        android:name="com.high_quality_solution.simplemocker.ui.request_editor.RequestEditorFragment"
+        android:name="com.github.vladimirlisovskij.simple_mocker.ui.request_editor.RequestEditorFragment"
         android:label="RequestEditorFragment"
         tools:layout="@layout/screen_request_editor" />
 </navigation>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.high_quality_solution.simplemocker.service">
+    package="com.github.vladimirlisovskij.simple_mocker.service">
 
     <application>
 
         <service
             android:process=":mockerServiceProcess"
-            android:name="com.high_quality_solution.simplemocker.service.MockerService"
+            android:name="com.github.vladimirlisovskij.simple_mocker.service.MockerService"
             android:exported="true" />
 
     </application>
