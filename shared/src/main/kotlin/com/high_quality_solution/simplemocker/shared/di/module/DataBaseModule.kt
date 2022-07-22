@@ -10,7 +10,9 @@ import dagger.Provides
 @Module
 object DataBaseModule {
     @Provides
-    fun provideDataBaseDriver(context: Context) = AndroidSqliteDriver(MockRequestsDatabase.Schema, context) as SqlDriver
+    fun provideDataBaseDriver(context: Context): SqlDriver {
+        return AndroidSqliteDriver(MockRequestsDatabase.Schema, context, "MockRequestsDatabase")
+    }
 
     @Provides
     fun provideDataBase(driver: SqlDriver): MockRequestsDatabase {

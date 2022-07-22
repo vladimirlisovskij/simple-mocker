@@ -4,5 +4,5 @@ import android.net.Uri
 
 class NewRequestInfo(
     val requestParams: RequestParams,
-    val fileUri: Uri?
+    val fileUri: Uri
 )

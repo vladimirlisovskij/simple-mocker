@@ -6,6 +6,7 @@ import com.high_quality_solution.simplemocker.app.di.ComponentScopeComponent
 import com.high_quality_solution.simplemocker.app.di.DaggerAppScopeComponent
 import com.high_quality_solution.simplemocker.app.di.DaggerComponentScopeComponent
 import com.high_quality_solution.simplemocker.service.di.ServiceComponentDependencies
+import com.high_quality_solution.simplemocker.ui.di.UIAppDependencies
 import com.high_quality_solution.simplemocker.ui.di.UIComponentDependencies
 
 class MockerApp : Application() {
@@ -18,6 +19,7 @@ class MockerApp : Application() {
         val appComponent = createAppScopeComponent()
         ServiceComponentDependencies.creator = { createComponentScopeComponent(appComponent) }
         UIComponentDependencies.creator = { createComponentScopeComponent(appComponent) }
+        UIAppDependencies.creator = { appComponent }
     }
 
     private fun createAppScopeComponent(): AppScopeComponent {

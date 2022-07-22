@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation(projects.shared)
     implementation(projects.plainAdapter)
+    implementation(projects.okhttp)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)

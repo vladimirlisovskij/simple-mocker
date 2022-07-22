@@ -8,7 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 
 @Component(
-    dependencies = [UIComponentDependencies::class],
+    dependencies = [UIComponentDependencies::class, UIAppDependencies::class],
     modules = [ViewModelModule::class]
 )
 interface UIComponent {
@@ -20,6 +20,7 @@ interface UIComponent {
             return DaggerUIComponent
                 .builder()
                 .uIComponentDependencies(UIComponentDependencies.creator.invoke())
+                .uIAppDependencies(UIAppDependencies.creator.invoke())
                 .build()
         }
     }

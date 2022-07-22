@@ -6,6 +6,7 @@
         android:id="@+id/actionInfo"
         android:icon="@drawable/ic_baseline_info_24"
         android:title="@string/action_info"
+        android:visible="false"
         app:showAsAction="ifRoom"/>
 
     <item

@@ -6,10 +6,10 @@ class RequestParams(
     val host: String? = null
 ) {
     override fun toString(): String {
-        return "${host ?: ANY_SEGMENT}/$path/${params ?: ANY_SEGMENT}"
+        return "${host ?: "*"}$path${paramsToString()}"
     }
 
-    companion object {
-        const val ANY_SEGMENT = "*"
-    }
+    private fun paramsToString() = params
+        ?.let { "?$it" }
+        .orEmpty()
 }

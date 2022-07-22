@@ -1,17 +1,27 @@
 package com.high_quality_solution.simplemocker.ui.request_editor
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.high_quality_solution.simplemocker.ui.R
 import com.high_quality_solution.simplemocker.ui.databinding.ScreenRequestEditorBinding
 import com.high_quality_solution.simplemocker.ui.di.UIComponent
 import com.high_quality_solution.simplemocker.ui.utils.Constants
+import com.high_quality_solution.simplemocker.ui.utils.Ext.createAfterTextChangedTextWatcher
+import com.high_quality_solution.simplemocker.ui.utils.Ext.createProgressDialog
+import com.high_quality_solution.simplemocker.ui.utils.Ext.setTextWithoutTextWatcher
 import com.high_quality_solution.simplemocker.ui.utils.Ext.simpleViewModels
+import kotlinx.coroutines.launch
 
 class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
     private val viewComponent by lazy(UIComponent::create)
@@ -23,10 +33,16 @@ class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
     }
 
     private val filePickerLauncher = createFilePickerLauncher()
+    private val hostFieldWatcher by lazy { createAfterTextChangedTextWatcher(viewModel::onHostChanged) }
+    private val pathFieldWatcher by lazy { createAfterTextChangedTextWatcher(viewModel::onPathChanged) }
+    private val argsFieldWatcher by lazy { createAfterTextChangedTextWatcher(viewModel::onParamsChanged) }
+    private val progressDialog by lazy { requireContext().createProgressDialog() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        initObservers()
+        viewModel.onViewCreated()
     }
 
     private fun createFilePickerLauncher(): ActivityResultLauncher<String> {
@@ -37,13 +53,55 @@ class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
 
     private fun initListeners() {
         with(binding) {
-            mbSelectFile.setOnClickListener { filePickerLauncher.launch(JSON_FILE_TYPE) }
+            toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
+            mbSelectFile.setOnClickListener { filePickerLauncher.launch(Constants.JSON_MIME) }
+            mbViewFile.setOnClickListener { viewModel.onFileShowClicked() }
         }
+    }
+
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                launch {
+                    viewModel.screenState.collect(::updateViewState)
+                }
+
+                launch {
+                    viewModel.screenEvent.collect { event ->
+                        when(event) {
+                            is RequestEditorViewModel.ShowFileEvent -> startJsonViewerActivity(event.intent)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startJsonViewerActivity(intent: Intent) {
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast
+                .makeText(requireContext(), R.string.error_acivity_not_found, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    private fun updateViewState(state: RequestEditorViewModel.ViewState) {
+        with(binding) {
+            etArgs.setTextWithoutTextWatcher(argsFieldWatcher, state.params)
+            etHost.setTextWithoutTextWatcher(hostFieldWatcher, state.host)
+            etPath.setTextWithoutTextWatcher(pathFieldWatcher, state.path)
+            mbViewFile.isVisible = state.isShowButtonVisible
+            tvFileName.text = state.fileName
+        }
+
+        if (state.isLoading) progressDialog.show()
+        else progressDialog.dismiss()
     }
 
     companion object {
         private const val ARG_ITEM_ID = "itemId"
-        private const val JSON_FILE_TYPE = "application/json"
     }
 }
 

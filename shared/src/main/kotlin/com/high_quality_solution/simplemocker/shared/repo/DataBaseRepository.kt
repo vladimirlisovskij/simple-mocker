@@ -6,19 +6,29 @@ import com.high_quality_solution.simplemocker.shared.dto.ResponseInfo
 import com.high_quality_solution.simplemocker.shared.mock_requests_database.MockRequestsDatabase
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 class DataBaseRepository(
     private val database: MockRequestsDatabase
 ) {
     fun insertMockRequest(requestInfo: RequestInfo) {
         database.requestQueries.insert(
-            id = requestInfo.id,
             path = requestInfo.requestParams.path,
             params = requestInfo.requestParams.params,
             host = requestInfo.requestParams.host,
             bodyFileName = requestInfo.bodyFileName
         )
+    }
+
+    suspend fun getRequestById(id: Long): RequestInfo {
+        return withContext(Dispatchers.IO) {
+            database.requestQueries.getById(
+                id = id,
+                mapper = ::createRequestInfo
+            ).executeAsOne()
+        }
     }
 
     fun removeMockRequestById(id: Long) {
@@ -35,11 +45,18 @@ class DataBaseRepository(
     fun findRequestResponse(params: RequestParams): ResponseInfo? {
         return database.requestQueries.findRequestResponse(
             path = params.path,
-            host = params.host,
-            params = params.params,
+//            host = params.host,
+//            params = params.params,
         )
             .executeAsOneOrNull()
             ?.let(::createResponseInfo)
+    }
+
+    fun setRequestEnabledState(id: Long, isEnabled: Boolean) {
+        database.requestQueries.setEnableState(
+            id = id,
+            isEnabled = if (isEnabled) REQUEST_ENABLED else REQUEST_DISABLED
+        )
     }
 
     private fun createRequestInfo(
@@ -50,7 +67,7 @@ class DataBaseRepository(
         bodyFileName: String,
         isEnabled: Long
     ): RequestInfo {
-        val params = RequestParams(
+        val requestParams = RequestParams(
             host = host,
             path = path,
             params = params
@@ -58,7 +75,7 @@ class DataBaseRepository(
 
         return RequestInfo(
             id = id,
-            requestParams = params,
+            requestParams = requestParams,
             bodyFileName = bodyFileName,
             isEnabled = isEnabled == REQUEST_ENABLED
         )

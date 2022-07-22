@@ -13,13 +13,9 @@ class GetMockResponseUseCase(
         return dataBaseRepository
             .findRequestResponse(request.requestParams)
             ?.let { info ->
-                val bodyUri = storageRepository.getReadUriForFileName(
-                    clientPackage = request.appPackage,
-                    fileName = info.bodyFileName
-                )
-
+                val bodyUri = storageRepository.getUriForFileName(info.bodyFileName)
+                storageRepository.grantReadPermissionForUri(request.appPackage, bodyUri)
                 MockResponse(bodyUri)
             }
     }
 }
-

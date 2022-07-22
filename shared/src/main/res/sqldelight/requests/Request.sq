@@ -8,8 +8,8 @@ CREATE TABLE request(
 );
 
 insert:
-INSERT INTO request(id, path, params, host, bodyFileName, isEnabled)
-VALUES (:id, :path, :params, :host, :bodyFileName, 1);
+INSERT INTO request(path, params, host, bodyFileName, isEnabled)
+VALUES (:path, :params, :host, :bodyFileName, 1);
 
 delete:
 DELETE FROM request
@@ -18,12 +18,23 @@ WHERE :id = request.id;
 getAll:
 SELECT * FROM request;
 
+getById:
+SELECT * FROM request
+WHERE request.id = :id
+LIMIT 1;
+
+setEnableState:
+UPDATE request
+SET isEnabled = :isEnabled
+WHERE request.id = :id;
+
 findRequestResponse:
-SELECT request.bodyFileName
-FROM request
+SELECT request.bodyFileName FROM request
 WHERE
     request.isEnabled = 1 AND
-    request.path = :path AND
-    request.host = IFNULL(:host, request.host) AND
-    request.params = IFNULL(:params, request.params)
-;
+    request.path = :path
+--     AND
+--     request.host = IFNULL(:host, request.host)
+--     AND
+--     request.params = IFNULL(:params, request.params)
+LIMIT 1;

@@ -22,5 +22,7 @@ android {
 
 dependencies {
     implementation(projects.aidl)
+
     implementation(libs.okhttp)
+    implementation(libs.coroutines)
 }

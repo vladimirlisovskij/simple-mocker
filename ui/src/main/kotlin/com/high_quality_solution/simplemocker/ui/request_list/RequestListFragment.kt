@@ -13,8 +13,10 @@ import com.high_quality_solution.simplemocker.ui.databinding.ScreenRequestListBi
 import com.high_quality_solution.simplemocker.ui.di.UIComponent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.RequestListFactory
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemClickedEvent
+import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemDeleteClickedEvent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemSwitchStateChangedEvent
 import com.high_quality_solution.simplemocker.ui.utils.Ext.simpleViewModels
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import template.plain_adapter.adapter.PlainAdapter
@@ -43,7 +45,8 @@ class RequestListFragment : Fragment(R.layout.screen_request_list) {
         adapter.setItemEventListener { event ->
             when (event) {
                 is ItemClickedEvent -> viewModel.onItemClicked(event.id)
-                is ItemSwitchStateChangedEvent -> {}
+                is ItemDeleteClickedEvent -> { }
+                is ItemSwitchStateChangedEvent -> viewModel.onItemEnabledStateChanged(event.id, event.isEnable)
             }
         }
 
@@ -60,11 +63,11 @@ class RequestListFragment : Fragment(R.layout.screen_request_list) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 launch {
-                    viewModel.requestsList.collectLatest(adapter::submitList)
+                    viewModel.requestsList.collect(adapter::submitList)
                 }
 
                 launch {
-                    viewModel.screenEvents.collectLatest { event ->
+                    viewModel.screenEvents.collect { event ->
                         when (event) {
                             is RequestListViewModel.ShowRequestEditScreen -> {
                                 val direction = RequestListFragmentDirections

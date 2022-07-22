@@ -7,13 +7,17 @@ import java.io.File
 
 class RequestBodyProvider : FileProvider() {
     companion object {
-        private const val AUTHORITY = "com.high_quality_solution.simplemocker.shared.provider"
-        private const val REQUEST_BODY_PATH = "request_body"
+        const val AUTHORITY = "com.high_quality_solution.simplemocker.shared.provider"
+        const val REQUEST_BODY_PATH = "request_body"
 
-        fun getMockRequestFileUri(context: Context, fileName: String): Uri {
+        fun getFile(context: Context, fileName: String): File {
             val dirPath = File(context.filesDir, REQUEST_BODY_PATH)
-            val bodyFile = File(dirPath, fileName)
-            return getUriForFile(context, AUTHORITY, bodyFile)
+            if (!dirPath.exists()) dirPath.mkdir()
+            return File(dirPath, fileName)
+        }
+
+        fun getUriForFile(context: Context, file: File): Uri {
+            return getUriForFile(context, AUTHORITY, file)
         }
     }
 }
