@@ -126,7 +126,7 @@ class RequestEditorViewModel(
                 val jsonIntent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     setDataAndType(uri, "text/plain")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
 
                 val chooserIntent = Intent.createChooser(jsonIntent, "title")

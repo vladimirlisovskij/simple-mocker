@@ -44,10 +44,10 @@ WHERE
     request.path = :path AND
     CASE WHEN :params IS NOT NULL
         THEN request.params IS NULL OR request.params = :params
-        ELSE 1
+        ELSE request.params IS NULL
         END AND
     CASE WHEN :host IS NOT NULL
         THEN request.host IS NULL OR request.host = :host
-        ELSE 1
+        ELSE request.host IS NULL
         END
 LIMIT 1;

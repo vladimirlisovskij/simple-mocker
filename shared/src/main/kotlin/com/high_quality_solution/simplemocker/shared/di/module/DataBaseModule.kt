@@ -10,10 +10,12 @@ import javax.inject.Singleton
 
 @Module
 object DataBaseModule {
+    private const val REQUESTS_DATABASE_NAME = "MockRequestsDatabase"
+
     @Provides
     @Singleton
     fun provideDataBaseDriver(context: Context): SqlDriver {
-        return AndroidSqliteDriver(MockRequestsDatabase.Schema, context, "MockRequestsDatabase")
+        return AndroidSqliteDriver(MockRequestsDatabase.Schema, context, REQUESTS_DATABASE_NAME)
     }
 
     @Provides
