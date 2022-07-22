@@ -6,18 +6,17 @@ import com.high_quality_solution.simplemocker.service.di.module.GateWayModule
 import dagger.Component
 
 @Component(
-    dependencies = [ServiceComponentDependencies::class],
+    dependencies = [ServiceDiDependencies::class],
     modules = [BinderModule::class, GateWayModule::class]
 )
 interface ServiceComponent {
     fun inject(service: MockerService)
 
-    companion object {
-        fun create(): ServiceComponent {
-            return DaggerServiceComponent
-                .builder()
-                .serviceComponentDependencies(ServiceComponentDependencies.creator.invoke())
-                .build()
-        }
+    @Component.Factory
+    interface Factory {
+        fun create(
+            serviceDiDependencies: ServiceDiDependencies
+        ): ServiceComponent
     }
 }
+

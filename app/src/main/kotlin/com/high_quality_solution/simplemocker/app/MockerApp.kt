@@ -1,13 +1,14 @@
 package com.high_quality_solution.simplemocker.app
 
 import android.app.Application
-import com.high_quality_solution.simplemocker.app.di.AppScopeComponent
-import com.high_quality_solution.simplemocker.app.di.ComponentScopeComponent
-import com.high_quality_solution.simplemocker.app.di.DaggerAppScopeComponent
-import com.high_quality_solution.simplemocker.app.di.DaggerComponentScopeComponent
-import com.high_quality_solution.simplemocker.service.di.ServiceComponentDependencies
-import com.high_quality_solution.simplemocker.ui.di.UIAppDependencies
-import com.high_quality_solution.simplemocker.ui.di.UIComponentDependencies
+import android.content.Context
+import com.high_quality_solution.simplemocker.service.di.ServiceDiDependencies
+import com.high_quality_solution.simplemocker.service.di.ServiceDiResolver
+import com.high_quality_solution.simplemocker.shared.di.SharedDiDependencies
+import com.high_quality_solution.simplemocker.shared.di.SharedDiResolver
+import com.high_quality_solution.simplemocker.shared.usecase.*
+import com.high_quality_solution.simplemocker.ui.di.UiDiDependencies
+import com.high_quality_solution.simplemocker.ui.di.UiDiResolver
 
 class MockerApp : Application() {
     override fun onCreate() {
@@ -16,22 +17,36 @@ class MockerApp : Application() {
     }
 
     private fun initDependencies() {
-        val appComponent = createAppScopeComponent()
-        ServiceComponentDependencies.creator = { createComponentScopeComponent(appComponent) }
-        UIComponentDependencies.creator = { createComponentScopeComponent(appComponent) }
-        UIAppDependencies.creator = { appComponent }
-    }
+        SharedDiResolver.dependenciesCreator = {
+            object : SharedDiDependencies {
+                override fun context() = this@MockerApp
+            }
+        }
 
-    private fun createAppScopeComponent(): AppScopeComponent {
-        return DaggerAppScopeComponent.factory().create(this)
-    }
+        ServiceDiResolver.dependenciesCreator = {
+            object : ServiceDiDependencies {
+                override fun getMockResponseUseCase() = SharedDiResolver.getApi().getMockResponseUseCase()
+            }
+        }
 
-    private fun createComponentScopeComponent(
-        appScopeComponent: AppScopeComponent
-    ): ComponentScopeComponent {
-        return DaggerComponentScopeComponent
-            .builder()
-            .appScopeComponent(appScopeComponent)
-            .build()
+        UiDiResolver.dependenciesCreator = {
+            object : UiDiDependencies {
+                override fun context() = this@MockerApp
+
+                override fun getRequestListUseCase() = SharedDiResolver.getApi().getRequestListUseCase()
+
+                override fun createMockRequestUseCase() = SharedDiResolver.getApi().createMockRequestUseCase()
+
+                override fun getRequestByIdUseCase() = SharedDiResolver.getApi().getRequestByIdUseCase()
+
+                override fun getUriForFileNameUseCase() = SharedDiResolver.getApi().getUriForFileNameUseCase()
+
+                override fun getFileNameByUriUseCase() = SharedDiResolver.getApi().getFileNameByUriUseCase()
+
+                override fun setRequestEnabledStateUseCase() = SharedDiResolver.getApi().setRequestEnabledStateUseCase()
+
+                override fun removeRequestUseCase() = SharedDiResolver.getApi().removeRequestUseCase()
+            }
+        }
     }
 }

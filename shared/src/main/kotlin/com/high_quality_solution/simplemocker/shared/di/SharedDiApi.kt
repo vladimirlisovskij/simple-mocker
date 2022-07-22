@@ -1,9 +1,9 @@
-package com.high_quality_solution.simplemocker.ui.di
+package com.high_quality_solution.simplemocker.shared.di
 
 import com.high_quality_solution.simplemocker.shared.usecase.*
-import kotlin.properties.Delegates
 
-interface UIComponentDependencies {
+interface SharedDiApi {
+    fun getMockResponseUseCase(): GetMockResponseUseCase
     fun getRequestListUseCase(): GetRequestListUseCase
     fun createMockRequestUseCase(): CreateMockRequestUseCase
     fun getRequestByIdUseCase(): GetRequestByIdUseCase
@@ -11,9 +11,4 @@ interface UIComponentDependencies {
     fun getFileNameByUriUseCase(): GetFileNameByUriUseCase
     fun setRequestEnabledStateUseCase(): SetRequestEnabledStateUseCase
     fun removeRequestUseCase(): RemoveRequestUseCase
-
-    companion object {
-        var creator: () -> UIComponentDependencies by Delegates.notNull()
-    }
 }
-

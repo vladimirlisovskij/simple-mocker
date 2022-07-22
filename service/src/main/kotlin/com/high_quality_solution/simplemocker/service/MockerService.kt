@@ -3,9 +3,8 @@ package com.high_quality_solution.simplemocker.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.high_quality_solution.simplemocker.service.di.DaggerServiceComponent
 import com.high_quality_solution.simplemocker.service.di.ServiceComponent
-import com.high_quality_solution.simplemocker.service.di.ServiceComponentDependencies
+import com.high_quality_solution.simplemocker.service.di.ServiceDiResolver
 import javax.inject.Inject
 
 class MockerService : Service() {
@@ -22,6 +21,6 @@ class MockerService : Service() {
     }
 
     private fun injectDependencies() {
-        ServiceComponent.create().inject(this)
+        ServiceDiResolver.getApi().inject(this)
     }
 }

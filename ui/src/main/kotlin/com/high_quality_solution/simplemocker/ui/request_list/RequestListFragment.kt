@@ -11,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.high_quality_solution.simplemocker.ui.R
 import com.high_quality_solution.simplemocker.ui.databinding.ScreenRequestListBinding
 import com.high_quality_solution.simplemocker.ui.di.UIComponent
+import com.high_quality_solution.simplemocker.ui.di.UiDiResolver
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.RequestListFactory
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemClickedEvent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemDeleteClickedEvent
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 import template.plain_adapter.adapter.PlainAdapter
 
 class RequestListFragment : Fragment(R.layout.screen_request_list) {
-    private val viewComponent by lazy(UIComponent::create)
+    private val viewComponent by lazy(UiDiResolver::getApi)
     private val binding by viewBinding(ScreenRequestListBinding::bind)
     private val viewModel by simpleViewModels<RequestListViewModel> {
         viewComponent.requestListViewModel()
