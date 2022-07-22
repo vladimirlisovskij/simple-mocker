@@ -12,10 +12,12 @@ object ViewModelModule {
     @Provides
     fun provideRequestListViewModel(
         getRequestListUseCase: GetRequestListUseCase,
-        setRequestEnabledStateUseCase: SetRequestEnabledStateUseCase
+        setRequestEnabledStateUseCase: SetRequestEnabledStateUseCase,
+        removeRequestUseCase: RemoveRequestUseCase
     ) = RequestListViewModel(
         getRequestListUseCase,
-        setRequestEnabledStateUseCase
+        setRequestEnabledStateUseCase,
+        removeRequestUseCase
     )
 
     @Provides

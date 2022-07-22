@@ -15,4 +15,6 @@
     <string name="request_editor_view_file">Просмотреть текущий файл</string>
     <string name="request_editor_save">Сохранить</string>
     <string name="request_editor_title">Настроить запрос</string>
+    <string name="request_editor_empty_path">Поле "Запрос" не должно быть пустым</string>
+    <string name="request_editor_empty_file">Прикрепите Json-файл с ответом</string>
 </resources>

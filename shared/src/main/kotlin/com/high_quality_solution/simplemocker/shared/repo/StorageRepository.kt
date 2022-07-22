@@ -7,6 +7,7 @@ import android.provider.OpenableColumns
 import com.high_quality_solution.simplemocker.shared.RequestBodyProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileOutputStream
 
 class StorageRepository(
@@ -45,8 +46,8 @@ class StorageRepository(
 
     }
 
-    fun removeFile(fileName: String) {
-
+    fun removeFile(fileName: String): Boolean {
+        return RequestBodyProvider.getFile(context, fileName).delete()
     }
 
     suspend fun tryCopyFile(fileUri: Uri): String? {

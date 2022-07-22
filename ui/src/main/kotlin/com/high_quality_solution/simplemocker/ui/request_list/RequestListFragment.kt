@@ -45,7 +45,7 @@ class RequestListFragment : Fragment(R.layout.screen_request_list) {
         adapter.setItemEventListener { event ->
             when (event) {
                 is ItemClickedEvent -> viewModel.onItemClicked(event.id)
-                is ItemDeleteClickedEvent -> { }
+                is ItemDeleteClickedEvent -> viewModel.onItemRemoveClicked(event.id)
                 is ItemSwitchStateChangedEvent -> viewModel.onItemEnabledStateChanged(event.id, event.isEnable)
             }
         }

@@ -55,4 +55,13 @@ object UseCaseModule {
     ) = SetRequestEnabledStateUseCase(
         dataBaseRepository
     )
+
+    @Provides
+    fun provideRemoveRequestUseCase(
+        dataBaseRepository: DataBaseRepository,
+        storageRepository: StorageRepository
+    ) = RemoveRequestUseCase(
+        dataBaseRepository,
+        storageRepository
+    )
 }

@@ -11,7 +11,7 @@ insert:
 INSERT INTO request(path, params, host, bodyFileName, isEnabled)
 VALUES (:path, :params, :host, :bodyFileName, 1);
 
-delete:
+deleteById:
 DELETE FROM request
 WHERE :id = request.id;
 

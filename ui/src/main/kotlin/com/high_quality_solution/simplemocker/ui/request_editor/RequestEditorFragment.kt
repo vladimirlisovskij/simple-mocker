@@ -53,9 +53,16 @@ class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
 
     private fun initListeners() {
         with(binding) {
-            toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
             mbSelectFile.setOnClickListener { filePickerLauncher.launch(Constants.JSON_MIME) }
             mbViewFile.setOnClickListener { viewModel.onFileShowClicked() }
+            toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
+            toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.actionSave -> viewModel.onSaveClicked()
+                }
+
+                true
+            }
         }
     }
 
@@ -68,8 +75,13 @@ class RequestEditorFragment : Fragment(R.layout.screen_request_editor) {
 
                 launch {
                     viewModel.screenEvent.collect { event ->
-                        when(event) {
+                        when (event) {
                             is RequestEditorViewModel.ShowFileEvent -> startJsonViewerActivity(event.intent)
+                            is RequestEditorViewModel.ToastScreenEvent -> Toast.makeText(
+                                requireContext(),
+                                event.text,
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }

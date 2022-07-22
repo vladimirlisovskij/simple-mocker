@@ -10,6 +10,7 @@ interface UIComponentDependencies {
     fun getUriForFileNameUseCase(): GetUriForFileNameUseCase
     fun getFileNameByUriUseCase(): GetFileNameByUriUseCase
     fun setRequestEnabledStateUseCase(): SetRequestEnabledStateUseCase
+    fun removeRequestUseCase(): RemoveRequestUseCase
 
     companion object {
         var creator: () -> UIComponentDependencies by Delegates.notNull()

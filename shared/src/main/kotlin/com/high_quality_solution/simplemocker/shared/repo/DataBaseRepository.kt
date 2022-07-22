@@ -13,13 +13,15 @@ import kotlinx.coroutines.withContext
 class DataBaseRepository(
     private val database: MockRequestsDatabase
 ) {
-    fun insertMockRequest(requestInfo: RequestInfo) {
-        database.requestQueries.insert(
-            path = requestInfo.requestParams.path,
-            params = requestInfo.requestParams.params,
-            host = requestInfo.requestParams.host,
-            bodyFileName = requestInfo.bodyFileName
-        )
+    suspend fun insertMockRequest(requestInfo: RequestInfo) {
+        withContext(Dispatchers.IO) {
+            database.requestQueries.insert(
+                path = requestInfo.requestParams.path,
+                params = requestInfo.requestParams.params,
+                host = requestInfo.requestParams.host,
+                bodyFileName = requestInfo.bodyFileName
+            )
+        }
     }
 
     suspend fun getRequestById(id: Long): RequestInfo {
@@ -31,15 +33,17 @@ class DataBaseRepository(
         }
     }
 
-    fun removeMockRequestById(id: Long) {
-        database.requestQueries.delete(id)
+    suspend fun removeMockRequestById(id: Long) {
+        withContext(Dispatchers.IO) {
+            database.requestQueries.deleteById(id)
+        }
     }
 
     fun getMockRequests(): Flow<List<RequestInfo>> {
         return database.requestQueries
             .getAll(::createRequestInfo)
             .asFlow()
-            .mapToList()
+            .mapToList(Dispatchers.IO)
     }
 
     fun findRequestResponse(params: RequestParams): ResponseInfo? {
@@ -52,11 +56,13 @@ class DataBaseRepository(
             ?.let(::createResponseInfo)
     }
 
-    fun setRequestEnabledState(id: Long, isEnabled: Boolean) {
-        database.requestQueries.setEnableState(
-            id = id,
-            isEnabled = if (isEnabled) REQUEST_ENABLED else REQUEST_DISABLED
-        )
+    suspend fun setRequestEnabledState(id: Long, isEnabled: Boolean) {
+        withContext(Dispatchers.IO) {
+            database.requestQueries.setEnableState(
+                id = id,
+                isEnabled = if (isEnabled) REQUEST_ENABLED else REQUEST_DISABLED
+            )
+        }
     }
 
     private fun createRequestInfo(

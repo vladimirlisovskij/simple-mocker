@@ -1,9 +1,11 @@
 package com.high_quality_solution.simplemocker.ui.request_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.high_quality_solution.simplemocker.shared.dto.RequestInfo
 import com.high_quality_solution.simplemocker.shared.usecase.GetRequestListUseCase
+import com.high_quality_solution.simplemocker.shared.usecase.RemoveRequestUseCase
 import com.high_quality_solution.simplemocker.shared.usecase.SetRequestEnabledStateUseCase
 import com.high_quality_solution.simplemocker.ui.base.ScreenEvent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.RequestListItem
@@ -14,11 +16,15 @@ import kotlinx.coroutines.launch
 
 class RequestListViewModel(
     private val getRequestListUseCase: GetRequestListUseCase,
-    private val setRequestEnabledStateUseCase: SetRequestEnabledStateUseCase
+    private val setRequestEnabledStateUseCase: SetRequestEnabledStateUseCase,
+    private val removeRequestUseCase: RemoveRequestUseCase
 ) : ViewModel() {
     val requestsList = getRequestListUseCase
         .invoke()
-        .map { it.map(::createRequestListItem) }
+        .map {
+            Log.d("ITEMS", "items ${it.size} $it")
+            it.map(::createRequestListItem)
+        }
         .flowOn(Dispatchers.IO)
 
     private val mutableScreenEvents = MutableSharedFlow<ScreenEvent>()
@@ -39,6 +45,12 @@ class RequestListViewModel(
     fun onItemEnabledStateChanged(itemId: Long, isEnabled: Boolean) {
         viewModelScope.launch {
             setRequestEnabledStateUseCase.invoke(itemId, isEnabled)
+        }
+    }
+
+    fun onItemRemoveClicked(itemId: Long) {
+        viewModelScope.launch {
+            removeRequestUseCase.invoke(itemId)
         }
     }
 

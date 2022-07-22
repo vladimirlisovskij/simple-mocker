@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.high_quality_solution.simplemocker.ui.databinding.ItemRequestInfoBinding
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemClickedEvent
+import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemDeleteClickedEvent
 import com.high_quality_solution.simplemocker.ui.request_list.adapter.events.ItemSwitchStateChangedEvent
 import template.plain_adapter.delegate.PlainAdapterDelegate
 import template.plain_adapter.holder.PlainAdapterBaseViewHolder
@@ -53,6 +54,7 @@ class RequestListItemDelegate() :
                 tvRequest.text = data.request
                 smIsEnabled.isChecked = data.isChecked
                 root.setOnClickListener { sendEvent(ItemClickedEvent(data.id)) }
+                ivRemove.setOnClickListener { sendEvent(ItemDeleteClickedEvent(data.id)) }
                 switchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
                     sendEvent(
                         ItemSwitchStateChangedEvent(data.id, isChecked)

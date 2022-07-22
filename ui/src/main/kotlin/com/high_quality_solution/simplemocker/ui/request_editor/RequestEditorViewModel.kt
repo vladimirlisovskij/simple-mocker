@@ -3,9 +3,9 @@ package com.high_quality_solution.simplemocker.ui.request_editor
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.high_quality_solution.simplemocker.okhttp.MockerInterceptor
 import com.high_quality_solution.simplemocker.shared.dto.NewRequestInfo
 import com.high_quality_solution.simplemocker.shared.dto.RequestInfo
 import com.high_quality_solution.simplemocker.shared.dto.RequestParams
@@ -13,6 +13,7 @@ import com.high_quality_solution.simplemocker.shared.usecase.CreateMockRequestUs
 import com.high_quality_solution.simplemocker.shared.usecase.GetFileNameByUriUseCase
 import com.high_quality_solution.simplemocker.shared.usecase.GetRequestByIdUseCase
 import com.high_quality_solution.simplemocker.shared.usecase.GetUriForFileNameUseCase
+import com.high_quality_solution.simplemocker.ui.R
 import com.high_quality_solution.simplemocker.ui.base.ScreenEvent
 import com.high_quality_solution.simplemocker.ui.utils.Constants
 import kotlinx.coroutines.flow.*
@@ -61,35 +62,41 @@ class RequestEditorViewModel(
                 fileName = getFileNameByUriUseCase.invoke(fileUri).orEmpty()
             )
         }
-
-        val newRequestInfo = NewRequestInfo(
-            requestParams = RequestParams(
-                path = "/api/service/cards"
-            ),
-
-            fileUri = fileUri
-        )
-
-        viewModelScope.launch {
-            createMockRequestUseCase.invoke(newRequestInfo)
-        }
     }
 
     fun onSaveClicked() {
-        var curState = mutableScreenState.value
+        val curState = mutableScreenState.value
         if (isInEditMode) {
+            val errorMessage = checkFieldsForEditMode(curState)
+            if (errorMessage != null) {
+                viewModelScope.launch {
+                    mutableScreenEvents.emit(ToastScreenEvent(errorMessage))
+                }
+            } else {
 
+            }
         } else {
+            val errorMessage = checkFieldsForCreateMode(curState)
+            if (errorMessage != null) {
+                viewModelScope.launch {
+                    mutableScreenEvents.emit(ToastScreenEvent(errorMessage))
+                }
+            } else {
+                val newRequestInfo = NewRequestInfo(
+                    requestParams = RequestParams(
+                        path = curState.path,
+                        host = curState.host.ifBlank { null },
+                        params = if (curState.params.isNotBlank()) sortParams(curState.params) else null
+                    ),
 
+                    fileUri = selectedFileUri!!
+                )
+
+                viewModelScope.launch {
+                    createMockRequestUseCase.invoke(newRequestInfo)
+                }
+            }
         }
-    }
-
-    private fun checkFieldsForEditMode(viewState: ViewState) {
-
-    }
-
-    private fun checkFieldsForCreateMode(viewState: ViewState) {
-
     }
 
     fun onFileShowClicked() {
@@ -126,6 +133,13 @@ class RequestEditorViewModel(
         }
     }
 
+    private fun sortParams(string: String): String {
+        return string
+            .split("&")
+            .sorted()
+            .joinToString("&")
+    }
+
     private fun createInitState(): ViewState {
         return ViewState(
             isLoading = isInEditMode,
@@ -137,7 +151,24 @@ class RequestEditorViewModel(
         )
     }
 
+    private fun checkFieldsForEditMode(viewState: ViewState): String? {
+        return when {
+            viewState.path.isBlank() -> context.getString(R.string.request_editor_empty_path)
+            else -> null
+        }
+    }
+
+    private fun checkFieldsForCreateMode(viewState: ViewState): String? {
+        return when {
+            viewState.path.isBlank() -> context.getString(R.string.request_editor_empty_path)
+            selectedFileUri == null -> context.getString(R.string.request_editor_empty_file)
+            else -> null
+        }
+    }
+
     class ShowFileEvent(val intent: Intent) : ScreenEvent
+
+    class ToastScreenEvent(val text: String) : ScreenEvent
 
     data class ViewState(
         val isLoading: Boolean,
