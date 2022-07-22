@@ -1,0 +1,35 @@
+CREATE TABLE request(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    path TEXT NOT NULL,
+    params TEXT,
+    host TEXT,
+    bodyFileName TEXT NOT NULL
+);
+
+insert:
+INSERT INTO request(id, path, params, host, bodyFileName)
+VALUES (:id, :path, :params, :host, :bodyFileName);
+
+delete:
+DELETE FROM request
+WHERE :id = request.id;
+
+getAll:
+SELECT * FROM request;
+
+findRequest:
+SELECT * FROM request
+WHERE CASE
+
+    WHEN :path != "" AND :host IS NOT NULL AND :params IS NOT NULL
+    THEN request.host = :host AND request.params = :params AND request.path = :path
+
+    WHEN :params IS NOT NULL
+    THEN request.params = :params AND request.path = :path
+
+    WHEN :host IS NOT NULL
+    THEN request.host = :host AND request.path = :path
+
+    ELSE request.path = :path
+
+END;

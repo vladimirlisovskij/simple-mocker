@@ -1,0 +1,23 @@
+[versions]
+androidx-core-version = "1.7.0"
+dagger-version = "2.42"
+okhttp-version = "4.10.0"
+sqldelight-version = "1.5.3"
+
+android-plugin-version = "7.0.2"
+kotlin-plugin-version = "1.6.10"
+
+[libraries]
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core-version" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp-version" }
+dagger-core = { module = "com.google.dagger:dagger", version.ref ="dagger-version" }
+dagger-kapt = { module = "com.google.dagger:dagger-compiler", version.ref ="dagger-version" }
+sqldeilght = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight-version" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-plugin-version" }
+android-library = { id = "com.android.library", version.ref = "android-plugin-version" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-plugin-version" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-plugin-version" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-plugin-version" }
+sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight-version" }

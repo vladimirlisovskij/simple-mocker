@@ -2,11 +2,12 @@ package com.high_quality_solution.simplemocker.service
 
 import com.high_quality_solution.simplemocker.aidl.MockRequestAidl
 import com.high_quality_solution.simplemocker.aidl.MockResponseAidl
-import com.high_quality_solution.simplemocker.shared_logic.usecase.GetMockResponseUseCase
-import com.high_quality_solution.simplemocker.shared_logic.dto.MockRequest
-import com.high_quality_solution.simplemocker.shared_logic.dto.RequestParams
+import com.high_quality_solution.simplemocker.shared.dto.MockRequest
+import com.high_quality_solution.simplemocker.shared.dto.RequestParams
+import com.high_quality_solution.simplemocker.shared.usecase.GetMockResponseUseCase
+import javax.inject.Inject
 
-class GetMockResponseGateway(
+class GetMockResponseGateway @Inject constructor(
     private val getMockResponseUseCase: GetMockResponseUseCase
 ) {
     operator fun invoke(request: MockRequestAidl): MockResponseAidl? {
