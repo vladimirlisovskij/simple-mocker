@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.androidx.navigation)
 }
 
 android {
@@ -12,10 +13,15 @@ android {
         targetSdk = 32
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -23,8 +29,18 @@ android {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.plainAdapter)
 
     implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragmentKts)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.coroutines)
     implementation(libs.dagger.core)
+    implementation(libs.material.core)
+    implementation(lib.viewbindingDelegate)
+
+    implementation(libs.bundles.androidx.navigation)
+
     kapt(libs.dagger.kapt)
 }

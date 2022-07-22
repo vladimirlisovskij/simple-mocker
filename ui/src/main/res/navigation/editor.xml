@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editor"
+    app:startDestination="@id/requestListFragment">
+
+    <fragment
+        android:id="@+id/requestListFragment"
+        android:name="com.high_quality_solution.simplemocker.ui.request_list.RequestListFragment"
+        android:label="RequestListFragment"
+        tools:layout="@layout/screen_request_list">
+        <action
+            android:id="@+id/action_requestListFragment_to_requestEditorFragment"
+            app:destination="@id/requestEditorFragment">
+
+            <argument
+                android:name="itemId"
+                app:argType="long" />
+
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/requestEditorFragment"
+        android:name="com.high_quality_solution.simplemocker.ui.request_editor.RequestEditorFragment"
+        android:label="RequestEditorFragment"
+        tools:layout="@layout/screen_request_editor" />
+</navigation>

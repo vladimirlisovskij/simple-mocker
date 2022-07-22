@@ -12,4 +12,16 @@ class StorageRepository(
         return RequestBodyProvider.getMockRequestFileUri(context, fileName)
             .also { context.grantUriPermission(clientPackage, it, Intent.FLAG_GRANT_READ_URI_PERMISSION) }
     }
+
+    fun replaceFile(oldFileName: String, newFileUri: Uri) {
+
+    }
+
+    fun removeFile(fileName: String) {
+
+    }
+
+    fun saveFile(fileUri: Uri) {
+
+    }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_info">Справка</string>
+    <string name="action_updates">История обновлений</string>
+
+    <string name="request_list_title">Список запросов</string>
+    <string name="request_list_add">Создать запрос</string>
+
+    <string name="request_editor_host">Имя хоста</string>
+    <string name="request_editor_path">Запрос</string>
+    <string name="request_editor_args">Аргументы запроса</string>
+    <string name="request_editor_choose_file">Выбрать файл</string>
+    <string name="request_editor_view_file">Просмотреть файл</string>
+    <string name="request_editor_save">Сохранить</string>
+    <string name="request_editor_title">Настроить запрос</string>
+</resources>

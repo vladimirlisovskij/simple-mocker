@@ -11,7 +11,7 @@ class GetMockResponseUseCase(
 ) {
     operator fun invoke(request: MockRequest): MockResponse? {
         return dataBaseRepository
-            .findRequest(request.requestParams)
+            .findRequestResponse(request.requestParams)
             ?.let { info ->
                 val bodyUri = storageRepository.getReadUriForFileName(
                     clientPackage = request.appPackage,
@@ -22,3 +22,4 @@ class GetMockResponseUseCase(
             }
     }
 }
+

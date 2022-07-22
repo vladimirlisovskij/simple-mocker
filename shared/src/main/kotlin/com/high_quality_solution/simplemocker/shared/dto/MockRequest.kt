@@ -5,8 +5,3 @@ class MockRequest(
     val requestParams: RequestParams
 )
 
-class RequestParams(
-    val path: String,
-    val params: String? = null,
-    val host: String? = null
-)

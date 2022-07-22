@@ -4,8 +4,8 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.high_quality_solution.simplemocker.service.di.DaggerServiceComponent
-import com.high_quality_solution.simplemocker.service.di.ServiceDependencies
-import com.high_quality_solution.simplemocker.shared.di.DaggerSharedProvidesComponent
+import com.high_quality_solution.simplemocker.service.di.ServiceComponent
+import com.high_quality_solution.simplemocker.service.di.ServiceComponentDependencies
 import javax.inject.Inject
 
 class MockerService : Service() {
@@ -22,17 +22,6 @@ class MockerService : Service() {
     }
 
     private fun injectDependencies() {
-        val serviceDependencies = ServiceDependencies.instance
-        val sharedProvides = DaggerSharedProvidesComponent
-            .builder()
-            .sharedDependencies(serviceDependencies)
-            .build()
-
-        DaggerServiceComponent
-            .builder()
-            .sharedProvidesComponent(sharedProvides)
-            .serviceDependencies(serviceDependencies)
-            .build()
-            .inject(this)
+        ServiceComponent.create().inject(this)
     }
 }

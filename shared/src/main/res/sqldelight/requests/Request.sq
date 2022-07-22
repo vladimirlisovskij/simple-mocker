@@ -3,12 +3,13 @@ CREATE TABLE request(
     path TEXT NOT NULL,
     params TEXT,
     host TEXT,
-    bodyFileName TEXT NOT NULL
+    bodyFileName TEXT NOT NULL,
+    isEnabled INTEGER NOT NULL
 );
 
 insert:
-INSERT INTO request(id, path, params, host, bodyFileName)
-VALUES (:id, :path, :params, :host, :bodyFileName);
+INSERT INTO request(id, path, params, host, bodyFileName, isEnabled)
+VALUES (:id, :path, :params, :host, :bodyFileName, 1);
 
 delete:
 DELETE FROM request
@@ -17,19 +18,12 @@ WHERE :id = request.id;
 getAll:
 SELECT * FROM request;
 
-findRequest:
-SELECT * FROM request
-WHERE CASE
-
-    WHEN :path != "" AND :host IS NOT NULL AND :params IS NOT NULL
-    THEN request.host = :host AND request.params = :params AND request.path = :path
-
-    WHEN :params IS NOT NULL
-    THEN request.params = :params AND request.path = :path
-
-    WHEN :host IS NOT NULL
-    THEN request.host = :host AND request.path = :path
-
-    ELSE request.path = :path
-
-END;
+findRequestResponse:
+SELECT request.bodyFileName
+FROM request
+WHERE
+    request.isEnabled = 1 AND
+    request.path = :path AND
+    request.host = IFNULL(:host, request.host) AND
+    request.params = IFNULL(:params, request.params)
+;

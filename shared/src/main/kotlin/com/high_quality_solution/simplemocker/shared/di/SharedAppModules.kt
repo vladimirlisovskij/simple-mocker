@@ -6,3 +6,4 @@ import dagger.Module
 
 @Module(includes = [RepositoryModule::class, DataBaseModule::class])
 object SharedAppModules
+

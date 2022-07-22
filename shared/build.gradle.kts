@@ -33,9 +33,7 @@ android {
 dependencies {
     implementation(libs.androidx.core)
     implementation(libs.dagger.core)
-    implementation(libs.sqldeilght)
+    implementation(libs.bundles.sqldelight)
 
     kapt(libs.dagger.kapt)
-
-    implementation("androidx.collection:collection:1.2.0")
 }

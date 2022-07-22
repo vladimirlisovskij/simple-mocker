@@ -1,0 +1,3 @@
+package template.plain_adapter.event
+
+interface PlainAdapterItemEvent
