@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.sqldelight)
 }
 
 android {
@@ -17,25 +16,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    sqldelight {
-        database("RequestsDataBase") {
-            packageName = "com.github.vladimirlisovskij.simple_mocker.shared.database.requests"
-            sourceFolders = listOf("res/sqldelight")
-        }
+        freeCompilerArgs = freeCompilerArgs + "-Xjvm-default=enable"
     }
 }
 
 dependencies {
-    implementation(projects.core.datasource.database)
-
-    implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.dagger.core)
-    implementation(libs.bundles.sqldelight)
 
     kapt(libs.dagger.kapt)
 }

@@ -1,0 +1,53 @@
+CREATE TABLE request(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    path TEXT NOT NULL,
+    params TEXT,
+    host TEXT,
+    bodyFileName TEXT NOT NULL,
+    isEnabled INTEGER NOT NULL
+);
+
+insert:
+INSERT INTO request(path, params, host, bodyFileName, isEnabled)
+VALUES (:path, :params, :host, :bodyFileName, 1);
+
+deleteById:
+DELETE FROM request
+WHERE :id = request.id;
+
+getAll:
+SELECT * FROM request;
+
+getById:
+SELECT * FROM request
+WHERE request.id = :id
+LIMIT 1;
+
+setEnableState:
+UPDATE request
+SET isEnabled = :isEnabled
+WHERE request.id = :id;
+
+updateRequestParams:
+UPDATE request
+SET
+    params = :params,
+    host = :host,
+    path = :path
+WHERE request.id = :id;
+
+findRequestResponse:
+SELECT request.bodyFileName
+FROM request
+WHERE
+    request.isEnabled = 1 AND
+    request.path = :path AND
+    CASE WHEN :params IS NOT NULL
+        THEN request.params IS NULL OR request.params = :params
+        ELSE request.params IS NULL
+        END AND
+    CASE WHEN :host IS NOT NULL
+        THEN request.host IS NULL OR request.host = :host
+        ELSE request.host IS NULL
+        END
+LIMIT 1;

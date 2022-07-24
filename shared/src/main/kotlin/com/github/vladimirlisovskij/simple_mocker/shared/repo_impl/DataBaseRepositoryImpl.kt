@@ -1,9 +1,9 @@
 package com.github.vladimirlisovskij.simple_mocker.shared.repo_impl
 
+import com.github.vladimirlisovskij.simple_mocker.shared.database.requests.RequestsDataBase
 import com.github.vladimirlisovskij.simple_mocker.shared.dto.RequestInfo
 import com.github.vladimirlisovskij.simple_mocker.shared.dto.RequestParams
 import com.github.vladimirlisovskij.simple_mocker.shared.dto.ResponseInfo
-import com.github.vladimirlisovskij.simple_mocker.shared.mock_requests_database.MockRequestsDatabase
 import com.github.vladimirlisovskij.simple_mocker.shared.repo.DataBaseRepository
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class DataBaseRepositoryImpl(
-    private val database: MockRequestsDatabase
+    private val database: RequestsDataBase
 ) : DataBaseRepository {
     override suspend fun insertMockRequest(requestInfo: RequestInfo) {
         withContext(Dispatchers.IO) {

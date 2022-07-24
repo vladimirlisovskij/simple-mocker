@@ -24,16 +24,13 @@ android {
 
     sqldelight {
         database("RequestsDataBase") {
-            packageName = "com.github.vladimirlisovskij.simple_mocker.shared.database.requests"
+            packageName = "com.github.vladimirlisovskij.simple_mocker.core.datasource.database.requests"
             sourceFolders = listOf("res/sqldelight")
         }
     }
 }
 
 dependencies {
-    implementation(projects.core.datasource.database)
-
-    implementation(libs.androidx.core)
     implementation(libs.dagger.core)
     implementation(libs.bundles.sqldelight)
 

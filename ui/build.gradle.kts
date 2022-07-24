@@ -29,7 +29,7 @@ android {
 
 dependencies {
     implementation(projects.shared)
-    implementation(projects.plainAdapter)
+    implementation(projects.core.infrastructure.view.plainAdapter)
     implementation(projects.okhttp)
 
     implementation(libs.androidx.core)
@@ -38,8 +38,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.coroutines)
     implementation(libs.dagger.core)
-    implementation(libs.material.core)
-    implementation(lib.viewbindingDelegate)
+    implementation(libs.google.material.core)
+    implementation(libs.viewbindingDelegate)
 
     implementation(libs.bundles.androidx.navigation)
 
