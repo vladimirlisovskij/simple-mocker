@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.google.material.core)
+    api(libs.google.material.core)
 
     implementation("androidx.annotation:annotation-experimental:1.1.0")
     implementation("androidx.transition:transition:1.3.1" )

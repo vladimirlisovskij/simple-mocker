@@ -8,7 +8,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import com.github.vladimirlisovskij.simple_mocker.aidl.MockerBinder
+import com.github.vladimirlisovskij.simple_mocker.core.aidl.MockerBinder
 
 class MockerServiceHelper private constructor(
     private val context: Context

@@ -1,7 +1,7 @@
 package com.github.vladimirlisovskij.simple_mocker.okhttp
 
 import android.content.Context
-import com.github.vladimirlisovskij.simple_mocker.aidl.MockRequestAidl
+import com.github.vladimirlisovskij.simple_mocker.core.aidl.MockRequestAidl
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response

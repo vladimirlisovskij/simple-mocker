@@ -9,7 +9,7 @@ class ViewModelFactory(
     private val delegateProviders: Map<Class<out ViewModel>, Provider<ViewModelFactoryDelegate>>
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        val provider = delegateProviders[modelClass]?.get() ?: throw Exception("Unknown ViewModel class")
-        return provider.createViewModel(extras) as T
+        val delegate = delegateProviders[modelClass]?.get() ?: throw Exception("Unknown ViewModel class")
+        return delegate.createViewModel(extras) as T
     }
 }

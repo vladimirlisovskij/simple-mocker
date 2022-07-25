@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.aidl)
+    implementation(projects.core.aidl)
 
     implementation(libs.okhttp)
 }

@@ -22,6 +22,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
+    api(libs.androidx.appcompat)
     implementation(libs.coroutines)
 }

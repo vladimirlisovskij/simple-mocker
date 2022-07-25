@@ -1,7 +1,7 @@
 package com.github.vladimirlisovskij.simple_mocker.service
 
-import com.github.vladimirlisovskij.simple_mocker.aidl.MockRequestAidl
-import com.github.vladimirlisovskij.simple_mocker.aidl.MockResponseAidl
+import com.github.vladimirlisovskij.simple_mocker.core.aidl.MockRequestAidl
+import com.github.vladimirlisovskij.simple_mocker.core.aidl.MockResponseAidl
 import com.github.vladimirlisovskij.simple_mocker.shared.dto.MockRequest
 import com.github.vladimirlisovskij.simple_mocker.shared.dto.RequestParams
 import com.github.vladimirlisovskij.simple_mocker.shared.usecase.GetMockResponseUseCase

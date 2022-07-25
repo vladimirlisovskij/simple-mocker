@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_info">Справка</string>
+    <string name="action_updates">История обновлений</string>
+
+    <string name="request_list_title">Список запросов</string>
+    <string name="request_list_add">Создать запрос</string>
+</resources>

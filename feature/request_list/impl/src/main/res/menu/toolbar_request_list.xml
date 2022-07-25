@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionUpdates"
+        android:icon="@drawable/ic_baseline_star_24"
+        android:title="@string/action_updates"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionInfo"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/action_info"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionCreate"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:title="@string/request_list_add"
+        app:showAsAction="ifRoom" />
+
+</menu>

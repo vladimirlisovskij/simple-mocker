@@ -27,7 +27,7 @@ viewbindingDelegate-version = "1.5.6"
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core-version" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat-version" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-version" }
-androidx-runtime-viewmodel = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-version" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-version" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation-version" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation-version" }
 androidx-activityKts = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activityKtx-version" }
