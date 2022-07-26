@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.dagger.core)
     implementation(libs.viewbindingDelegate)
     implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.fragmentKtx)
 
     kapt(libs.dagger.kapt)
 }

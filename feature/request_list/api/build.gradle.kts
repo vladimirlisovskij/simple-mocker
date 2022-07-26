@@ -24,5 +24,4 @@ android {
 dependencies {
     implementation(projects.core.infrastructure.view.base)
     implementation(projects.core.infrastructure.view.navigationFactory)
-    implementation(projects.core.infrastructure.di.dependencyContainer)
 }

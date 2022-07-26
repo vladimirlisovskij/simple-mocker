@@ -34,7 +34,7 @@ dependencies {
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.fragmentKts)
+    implementation(libs.androidx.fragmentKtx)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.coroutines)
     implementation(libs.dagger.core)
