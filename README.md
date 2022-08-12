@@ -10,7 +10,7 @@
 
 Приложение для подмены можно использовать при включенном vpn
 
-[Собранное приложение для управления списком запросов](https://github.com/vladimirlisovskij/simple-mocker/releases/download/1.0-alpha1/app-release-unsigned.apk)
+[Собранное приложение для управления списком запросов](https://github.com/vladimirlisovskij/simple-mocker/releases/download/1.0-alpha1/app-release.apk)
 
 # Главный экран
 На главном экране представлен хранящийся в приложении список запросов. Каждую запись можно
