@@ -1,28 +1,11 @@
 plugins {
     id("maven-publish")
+    id("projectPlugins.config.android.library.base")
 
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
-    compileSdk = 32
-
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 32
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
     publishing {
         singleVariant("release") {
             withSourcesJar()

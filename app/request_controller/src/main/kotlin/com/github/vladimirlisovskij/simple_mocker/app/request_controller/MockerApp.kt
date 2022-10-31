@@ -11,42 +11,42 @@ import com.github.vladimirlisovskij.simple_mocker.ui.di.UiDiResolver
 class MockerApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        initDependencies()
+        // initDependencies()
     }
 
-    private fun initDependencies() {
-        SharedDiResolver.dependenciesCreator = {
-            object : SharedDiDependencies {
-                override fun context() = this@MockerApp
-            }
-        }
-
-        ServiceDiResolver.dependenciesCreator = {
-            object : ServiceDiDependencies {
-                override fun getMockResponseUseCase() = SharedDiResolver.getApi().getMockResponseUseCase()
-            }
-        }
-
-        UiDiResolver.dependenciesCreator = {
-            object : UiDiDependencies {
-                override fun context() = this@MockerApp
-
-                override fun getRequestListUseCase() = SharedDiResolver.getApi().getRequestListUseCase()
-
-                override fun createMockRequestUseCase() = SharedDiResolver.getApi().createMockRequestUseCase()
-
-                override fun getRequestByIdUseCase() = SharedDiResolver.getApi().getRequestByIdUseCase()
-
-                override fun getUriForFileNameUseCase() = SharedDiResolver.getApi().getUriForFileNameUseCase()
-
-                override fun getFileNameByUriUseCase() = SharedDiResolver.getApi().getFileNameByUriUseCase()
-
-                override fun setRequestEnabledStateUseCase() = SharedDiResolver.getApi().setRequestEnabledStateUseCase()
-
-                override fun removeRequestUseCase() = SharedDiResolver.getApi().removeRequestUseCase()
-
-                override fun updateRequestUseCase() = SharedDiResolver.getApi().updateRequestUseCase()
-            }
-        }
-    }
+    // private fun initDependencies() {
+    //     SharedDiResolver.dependenciesCreator = {
+    //         object : SharedDiDependencies {
+    //             override fun context() = this@MockerApp
+    //         }
+    //     }
+    //
+    //     ServiceDiResolver.dependenciesCreator = {
+    //         object : ServiceDiDependencies {
+    //             override fun getMockResponseUseCase() = SharedDiResolver.getApi().getMockResponseUseCase()
+    //         }
+    //     }
+    //
+    //     UiDiResolver.dependenciesCreator = {
+    //         object : UiDiDependencies {
+    //             override fun context() = this@MockerApp
+    //
+    //             override fun getRequestListUseCase() = SharedDiResolver.getApi().getRequestListUseCase()
+    //
+    //             override fun createMockRequestUseCase() = SharedDiResolver.getApi().createMockRequestUseCase()
+    //
+    //             override fun getRequestByIdUseCase() = SharedDiResolver.getApi().getRequestByIdUseCase()
+    //
+    //             override fun getUriForFileNameUseCase() = SharedDiResolver.getApi().getUriForFileNameUseCase()
+    //
+    //             override fun getFileNameByUriUseCase() = SharedDiResolver.getApi().getFileNameByUriUseCase()
+    //
+    //             override fun setRequestEnabledStateUseCase() = SharedDiResolver.getApi().setRequestEnabledStateUseCase()
+    //
+    //             override fun removeRequestUseCase() = SharedDiResolver.getApi().removeRequestUseCase()
+    //
+    //             override fun updateRequestUseCase() = SharedDiResolver.getApi().updateRequestUseCase()
+    //         }
+    //     }
+    // }
 }
